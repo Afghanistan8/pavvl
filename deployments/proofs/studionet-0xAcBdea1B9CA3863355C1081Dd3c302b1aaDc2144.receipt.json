@@ -1,0 +1,9 @@
+{
+  "transaction": "0x9de6ae50d711348a0a4073efff407c388b2d0d67ce97f419e6743b6805c9ddb1",
+  "status": "FINALIZED",
+  "result": "MAJORITY_AGREE",
+  "contract_address": "0xAcBdea1B9CA3863355C1081Dd3c302b1aaDc2144",
+  "deployer": "0x4184bc5E5444F250767E8D33A49817A9B4FB0df3",
+  "created_at": "2026-10-18T16:17:14.832051+00:00",
+  "rounds": 1
+}

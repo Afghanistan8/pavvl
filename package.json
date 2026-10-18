@@ -1,0 +1,19 @@
+{
+  "name": "pavvl",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Criteria-first evidence assessment and settlement on GenLayer Studionet (chain 61999).",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "check": "node scripts/deploy.mjs --check",
+    "deploy": "node scripts/deploy.mjs",
+    "deploy:verify": "node scripts/deploy.mjs --verify",
+    "review": "node tools/adversarial_review.mjs",
+    "test": "python -m pytest -q",
+    "lint:py": "ruff check contracts tests"
+  }
+}

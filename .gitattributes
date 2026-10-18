@@ -1,0 +1,13 @@
+# Normalize line endings so the contract's bytes are identical everywhere.
+# contracts/pavvl.py must be ASCII with LF only (asserted by
+# tests/direct/test_receipt.py::test_source_is_ascii_with_lf_only), and the
+# on-chain source hash depends on stable bytes.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
