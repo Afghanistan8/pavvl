@@ -18,7 +18,7 @@ node scripts/deploy.mjs --verify
 ```
 
 > Note: `python -m pytest` prints a `gltest` warning on stderr, which PowerShell
-> reports as `Exited with code 1`. The suite result line (`76 passed`) is the
+> reports as `Exited with code 1`. The suite result line (`79 passed`) is the
 > authoritative outcome.
 
 ## 1. Direct Mode contract tests (`tests/direct/`)
@@ -41,6 +41,7 @@ the harness exactly as the contract links twins.
 | `test_invariants.py` | balance books equality, failed transfer never strands value, no self-certification paths, lapse returns the deposit, counter consistency |
 | `test_governance.py` | governance view reports no authority, deployer recorded but powerless, no pause/upgrade/admin methods, every write gate is a frozen-terms role, deployer cannot move held funds, stats/config agree |
 | `test_hardening.py` | digest freeze/recompute, criteria-id injection, stored-bytes digest, duplicate filing, cross-counterparty reuse, manifest reuse, prompt injection, settlement fail-closed, supported pays claimant |
+| `test_validators.py` | validator independence over image evidence: a sighted validator calibrates, examines the image, and agrees; a blind validator dissents without looking or judging the leader's descriptions; a blind leader records no decision |
 
 `model.py` holds harness helpers (canary PNG codec, queued-answer helpers).
 
@@ -75,7 +76,10 @@ straight from the source, so a reviewer can spot drift in one command:
    unbacked);
 4. no pause / upgrade / owner / admin / operator method or stored key;
 5. `_guard_chain` refuses every chain but Studionet;
-6. no model or assistant attribution in committed text.
+6. no node judges another node's observations of the evidence: a node whose model
+   cannot receive images refuses, and every voting validator examines the evidence
+   itself;
+7. no model or assistant attribution in committed text.
 
 Hard failures exit non-zero; advisories are printed and do not fail the run.
 
@@ -89,8 +93,9 @@ header and the configured network without sending a transaction.
 ## 5. What is deliberately not tested here
 
 - **Live consensus.** Direct Mode runs only the leader; `h.run_validator()` replays
-  the captured validator closure for dissent tests. Real validator voting, quorum,
-  and finality are properties of Studionet, exercised by the live deployment's
+  the captured validator closure for dissent tests, including the blind validator
+  that refuses to assess image evidence. Real validator voting, quorum, and
+  finality are properties of Studionet, exercised by the live deployment's
   `FINALIZED` / `MAJORITY_AGREE` receipt.
 - **Network availability.** The chain gate is asserted statically and behaviourally,
   but a live outage is not simulated.
@@ -100,7 +105,7 @@ header and the configured network without sending a transaction.
 ## 6. Reproducing the counts
 
 ```bash
-python -m pytest -q                 # 76 passed
-node tools/adversarial_review.mjs   # 9 passed, 0 advisory, 0 failed
+python -m pytest -q                 # 79 passed
+node tools/adversarial_review.mjs   # 11 passed, 0 advisory, 0 failed
 node scripts/deploy.mjs --verify    # verified: on-chain source == repository source
 ```

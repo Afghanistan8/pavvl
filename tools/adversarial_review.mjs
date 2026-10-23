@@ -12,7 +12,9 @@
  *      callable path is missing from what the contract publishes for clients;
  *   4. there is no pause / upgrade / owner / admin / operator surface;
  *   5. the contract refuses every chain but Studionet (61999);
- *   6. committed text carries no model or assistant attribution.
+ *   6. no node judges another node's observations of the evidence: a node that
+ *      cannot receive images refuses, and every voting validator examines it;
+ *   7. committed text carries no model or assistant attribution.
  *
  * Hard failures exit non-zero. Advisories are printed and do not fail the run.
  *
@@ -258,7 +260,31 @@ function checkStudionetOnly(source) {
   }
 }
 
-/** 6. No model/assistant attribution in committed text. */
+/** 6. No node judges another node's observations of the evidence. */
+function checkIndependentExamination(source) {
+  const assessment = /def _assess\([^)]*\)[^:\n]*:(.*?)(?=\n    def |\n    @)/s.exec(source);
+  if (!assessment) {
+    fail("could not find _assess");
+    return;
+  }
+  const body = assessment[1];
+  if (/def _borrow\b/.test(source) || /\bborrowed\b/.test(source)) {
+    fail("an observation-borrowing path exists (_borrow / borrowed)");
+  } else {
+    pass("no node judges another node's observations of the evidence");
+  }
+  if (
+    !/if not sighted:/.test(body) ||
+    !/cannot receive images/.test(body) ||
+    !/raise gl\.vm\.UserError/.test(body)
+  ) {
+    fail("_assess does not refuse when the node's model cannot receive images");
+  } else {
+    pass("_assess refuses when the model cannot receive images (leader errors, validator dissents)");
+  }
+}
+
+/** 7. No model/assistant attribution in committed text. */
 function checkAttribution(files) {
   const self = fileURLToPath(import.meta.url);
   const hits = [];
@@ -303,6 +329,7 @@ function main() {
   checkWriteGateCoverage(contractSource);
   checkNoGovernanceSurface(contractSource);
   checkStudionetOnly(contractSource);
+  checkIndependentExamination(contractSource);
   checkAttribution(walk(ROOT));
 
   report();

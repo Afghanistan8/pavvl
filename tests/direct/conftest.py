@@ -71,6 +71,7 @@ class Harness:
         self.transfers = []
         self.network_balance = 0  # GEN the network holds for the contract
         self._Address = None
+        self._blind = False  # when True, the model receives no images at all
         vm._chain_id = STUDIONET_CHAIN_ID
         vm._gl_call_hook = self._hook
         # The contract gates writes on gl.message.chain_id (Studionet only).
@@ -166,12 +167,17 @@ class Harness:
                 # itself), so return plain values, not Lazy.
                 images = config.get("images") or []
                 if "calibration image" in prompt and images:
-                    harness.prompts.append({"kind": "sight", "images": len(images)})
-                    try:
-                        code = read_canary(bytes(images[0]))
-                    except Exception as e:
-                        raise NoAnswer(f"canary PNG did not decode: {e}")
-                    raw = {"digits": code}
+                    harness.prompts.append({"kind": "sight", "images": len(images),
+                                            "blind": harness._blind})
+                    if harness._blind:
+                        # A model that receives no image cannot read the digits.
+                        raw = {"digits": ""}
+                    else:
+                        try:
+                            code = read_canary(bytes(images[0]))
+                        except Exception as e:
+                            raise NoAnswer(f"canary PNG did not decode: {e}")
+                        raw = {"digits": code}
                     if config.get("response_format") == "json":
                         return raw
                     import json as _j
@@ -251,8 +257,39 @@ class Harness:
         assert match in text, f"refusal was: {text}"
         return text
 
-    def run_validator(self, index=-1):
-        return self.vm.run_validator(index=index)
+    def blind(self, on: bool = True):
+        """Make this node's model receive no images, so its calibration fails
+        and it must refuse to assess a case that has image evidence."""
+        self._blind = bool(on)
+        return self
+
+    def run_validator(self, index=-1, answers=None):
+        """Replay the captured validator closure.
+
+        `answers` re-arms the model queue for the replay (examination answers
+        first, then the judge answer), because a sighted validator re-runs the
+        whole assessment itself. With no answers the replay uses whatever this
+        node's calibration decides, which is enough to show that a blind node
+        refuses before it asks anything."""
+        if answers is None:
+            return self.vm.run_validator(index=index)
+        saved = self.answers
+        queue = list(answers)
+        self.answers = queue
+        orig = self.vm._match_llm_mock
+
+        def queued(prompt):
+            if not queue:
+                raise NoAnswer(f"no queued model answer for prompt: {prompt[:120]}")
+            self.prompts.append(prompt)
+            return queue.pop(0)
+
+        self.vm._match_llm_mock = queued
+        try:
+            return self.vm.run_validator(index=index)
+        finally:
+            self.vm._match_llm_mock = orig
+            self.answers = saved
 
 
 @pytest.fixture

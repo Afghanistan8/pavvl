@@ -127,6 +127,17 @@ header, then re-fetches the on-chain source and proves its SHA-256 equals the
 repository's before writing the manifest.
 → `deployments/studionet.json`, `node scripts/deploy.mjs --verify`.
 
+### T13 — A validator voting on evidence it never saw
+Material image evidence can control settlement, so every voting validator must
+verify it itself. A node proves its model really receives images by reading a
+calibration image (`_sighted`). If it cannot, it refuses to assess a case that has
+any image evidence: it cannot lead, and as a validator its refusal is a dissent.
+It never judges the leading validator's descriptions in place of looking, so a
+decision needs a majority that actually examined the images.
+→ `test_a_sighted_validator_examines_the_image_and_agrees`,
+`test_a_blind_validator_dissents_instead_of_borrowing`,
+`test_a_blind_leader_cannot_produce_a_decision`.
+
 ## 4. Fails-closed summary
 
 Every uncertain path demotes toward `INSUFFICIENT`:
@@ -134,6 +145,8 @@ Every uncertain path demotes toward `INSUFFICIENT`:
 - missing required evidence → `REQUIRED_MISSING`;
 - nothing filed → `NOTHING_FILED`;
 - nothing visible to a node → `NOT_ASSESSED`;
+- a node that cannot receive images refuses a case with image evidence (the
+  leader errors, a validator dissents);
 - own-evidence-only with opposition → `CONFLICTING` (F3);
 - non-answer / malformed / out-of-vocabulary → `INSUFFICIENT` (F0/F4/F1).
 

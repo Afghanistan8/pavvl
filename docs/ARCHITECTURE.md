@@ -119,8 +119,14 @@ evidence it is.
    `REQUIRED_MISSING` / `NOTHING_FILED`, recorded as a `CODE` decision. Missing
    evidence is never proof of anything.
 2. **The panel.** Otherwise `_panel` runs `gl.vm.run_nondet(leader, validator)`.
-   The leader examines each image (a sighted calibration step first), then judges
-   each criterion. Every validator re-runs the *same* assessment itself.
+   Before anything else a node proves its model really receives images by reading
+   the digits in a calibration image (`_sighted`). A node that passes examines
+   every image itself and judges each criterion. Every validator re-runs the
+   *same* assessment itself, from the same stored evidence — it calibrates,
+   examines, and judges, and agrees only with a leader that counted what it saw.
+   A node that cannot receive images refuses to assess a case that has any image
+   evidence: it cannot lead, and as a validator it dissents. No node ever votes
+   on another node's description of evidence it did not see.
 
 ### What consensus binds
 
@@ -131,6 +137,11 @@ Wording, cited ids, and the finer labels (`NOT_ESTABLISHED`, `CONFLICTING`,
 `INSUFFICIENT`) are **not** compared: they turn on which items a model cites, and
 honest models differ. They are recorded as the leader's reading, and the decision
 record says so in `bound`.
+
+Independently of the leader's result, a node whose model cannot receive images
+refuses to assess a case that has image evidence (`_assess`). It never leads one
+and, as a validator, its refusal is a dissent; it never judges the leading
+validator's descriptions in place of looking.
 
 A validator also refuses the leader's result if:
 - the leader's result does not judge every criterion (`_judged`), or is malformed;

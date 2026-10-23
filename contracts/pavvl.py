@@ -1019,8 +1019,8 @@ def _notes(raw, image_kinds: dict, seen_ids: list) -> list:
     """A node's notes on each image in a fixed shape: one entry per image on
     the case, in filing order, seen exactly when the settled result says so,
     bounded text taken from strings only, a quality from the vocabulary and
-    nothing else. This is what the record keeps, and what a validator whose
-    model cannot receive images reads in place of looking."""
+    nothing else. This is what the record keeps, taken from the decision the
+    validators agreed on."""
     by_id = {}
     for o in (raw if isinstance(raw, list) else []):
         if isinstance(o, dict) and isinstance(o.get("evidence_id"), str):
@@ -2202,17 +2202,6 @@ class Pavvl(gl.Contract):
             got = str(got)
         return isinstance(got, str) and "".join(ch for ch in got[:40] if ch in "0123456789") == code
 
-    def _borrow(self, ctx: dict, lead) -> tuple:
-        """For a node whose model cannot receive images: the leading
-        validator's notes on each image, cut to the fixed shape, and the
-        images it reports having seen."""
-        raw = lead.get("raw") if isinstance(lead, dict) else None
-        claimed = raw.get("seen_ids") if isinstance(raw, dict) else None
-        seen = sorted(set(x for x in (claimed if isinstance(claimed, list) else [])
-                          if isinstance(x, str) and x in ctx["image_kinds"]))
-        notes = _notes(lead.get("observations") if isinstance(lead, dict) else None, ctx["image_kinds"], seen)
-        return [dict(n, borrowed=True) for n in notes], seen
-
     def _judge_prompt(self, ctx: dict, observations: list) -> str:
         t = ctx["terms"]
         obs = {o["evidence_id"]: o for o in observations}
@@ -2268,8 +2257,7 @@ class Pavvl(gl.Contract):
                 if not o or not o["seen"]:
                     body = "could not be examined, so it counts for nothing; do not cite it"
                 else:
-                    lead_in = ("this validator's model could not receive images; the leading validator "
-                               "describes it as: " if o.get("borrowed") else "what your examination saw: ")
+                    lead_in = "what your examination saw: "
                     if via:
                         lead_in = (f"this copy did not open; it is the same bytes as {via}, so it shows the same. "
                                    + lead_in)
@@ -2360,19 +2348,22 @@ class Pavvl(gl.Contract):
         result when this node is a validator, and None when it leads.
 
         A node whose model cannot receive images (it fails the calibration
-        image) cannot lead a case that has images: it would decide without
-        looking. As a validator it reads the leading validator's notes on
-        each image instead of looking; a validator that does receive images
-        examines every one itself, and dissents if the leader counted fewer
-        than it saw."""
+        image) cannot verify the image evidence in a case that has any, so it
+        refuses to assess at all: it cannot lead, and as a validator it
+        dissents rather than judge the leading validator's descriptions of
+        images it never saw. Every validator that votes has examined every
+        image itself."""
         sighted = (not ctx["images"]) or self._sighted(ctx)
-        if lead is None and not sighted:
-            raise gl.vm.UserError(f"{ERROR_LLM} this validator's model cannot receive images, so it cannot lead "
-                                  "an assessment that has them")
-        if sighted:
-            observations, seen_ids = self._examine(ctx)
-        else:
-            observations, seen_ids = self._borrow(ctx, lead)
+        if not sighted:
+            # Material image evidence can control settlement, so a node that
+            # cannot see the images cannot verify it. It must not vote on it,
+            # and it must not lead: it refuses instead of borrowing another
+            # node's descriptions. A validator's refusal is recorded as a
+            # dissent, so the decision needs a majority that actually looked.
+            raise gl.vm.UserError(
+                f"{ERROR_LLM} this node's model cannot receive images, so it cannot verify the image "
+                "evidence in this case and must not vote on it")
+        observations, seen_ids = self._examine(ctx)
         prompt = self._judge_prompt(ctx, observations)
         # Judged as the model gave it, before anything is cut to shape: the
         # trim below would turn a slip of form into a tidy, wrong answer.
@@ -2391,7 +2382,7 @@ class Pavvl(gl.Contract):
             raise gl.vm.UserError(f"{ERROR_LLM} this validator's model did not judge every criterion")
         raw = _trim(answer, seen_ids)
         return {"raw": raw, "settled": _settle(raw, ctx), "sighted": sighted,
-                "observations": [{k: v for k, v in o.items() if k != "borrowed"} for o in observations]}
+                "observations": observations}
 
     def _panel(self, ctx: dict) -> dict:
         def summary(mine: dict) -> str:

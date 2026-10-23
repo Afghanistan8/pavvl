@@ -9,7 +9,7 @@ exact commands to check them with. Nothing here asks you to trust the authors.
   dependencies beyond the pinned GenVM std.
 - Tests: [`tests/direct/`](../tests/direct) — Direct Mode against the real SDK.
 - Deploy driver: [`scripts/deploy.mjs`](../scripts/deploy.mjs).
-- Deployment of record: `0xAcBdea1B9CA3863355C1081Dd3c302b1aaDc2144` on Studionet
+- Deployment of record: `0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234` on Studionet
   (chain 61999).
 
 ## 1. Does the running contract match this repository?
@@ -22,11 +22,11 @@ Expect `verified true` and a `source sha256` equal to `onchain sha256`. If they
 disagree, the script exits non-zero. You can also check independently:
 
 ```bash
-genlayer code 0xAcBdea1B9CA3863355C1081Dd3c302b1aaDc2144 | sha256sum
+genlayer code 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 | sha256sum
 ```
 
 The on-chain source is also stored verbatim at
-`deployments/proofs/studionet-0xAcBde….genlayer.py`.
+`deployments/proofs/studionet-0x5F3fcc6….genlayer.py`.
 
 ## 2. Is it really Studionet-only?
 
@@ -42,7 +42,7 @@ the static test `test_every_write_guards_the_chain` asserts that from the source
 ## 3. Is there really no owner, admin, or upgrade path?
 
 ```bash
-genlayer call 0xAcBdea1B9CA3863355C1081Dd3c302b1aaDc2144 get_governance
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_governance
 python -m pytest tests/direct/test_governance.py tests/direct/test_receipt.py -q
 ```
 
@@ -62,6 +62,19 @@ python -m pytest tests/direct/test_hardening.py -q -k "reuse or injection"
 The floors (**F3**, **F2**, **F6/F7**) must demote a finding to `CONFLICTING` /
 `INSUFFICIENT` wherever a conclusive finding would rest only on the favoured side's
 own evidence, or on reused or injection-flagged items.
+
+## 4b. Does every voting validator see the images itself?
+
+```bash
+python -m pytest tests/direct/test_validators.py -q
+```
+
+A node proves it receives images by reading a calibration image. If it cannot, the
+contract refuses to let it assess any case with image evidence: it cannot lead, and
+as a validator it dissents. It never judges the leader's description of an image it
+did not see, so a decision needs a majority that actually looked. The tests show a
+sighted validator calibrating, examining, and agreeing; a blind validator dissenting
+without ever examining; and a blind leader recording no decision.
 
 ## 5. Does anything but SUPPORTED pay the claimant?
 
@@ -121,9 +134,10 @@ node tools/adversarial_review.mjs
 This script walks the repository and flags (a) any write not guarded by
 `_guard_chain`, (b) any write with no `get_actions` gate or any gate with no write,
 (c) any sign of a pause/upgrade/admin/owner surface, (d) a `_guard_chain` that does
-not refuse a non-Studionet chain, and (e) any model/assistant attribution in
-committed text. It prints findings and exits non-zero on a hard failure. It is a
-convenience, not a substitute for the tests.
+not refuse a non-Studionet chain, (e) any model/assistant attribution in committed
+text, and (f) any path where a node could judge another node's observations of the
+evidence instead of the evidence itself. It prints findings and exits non-zero on a
+hard failure. It is a convenience, not a substitute for the tests.
 
 ## 9. Design guarantees
 
