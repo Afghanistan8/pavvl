@@ -1,0 +1,266 @@
+{
+  "contract": "0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234",
+  "rpc": "https://studio.genlayer.com/api",
+  "claimant": "0x4184bc5E5444F250767E8D33A49817A9B4FB0df3",
+  "respondent": "0x1b7e06BcD6D4b15B14EcaC6BAf40DB1757d9062f",
+  "case_id": "PR-0001",
+  "terms_digest": "3c798528fe12ae9edff50b2f9cbf153b1b3ceff0bb744197c837082a605c993a",
+  "terms": {
+    "title": "Delivery of 100 widgets to Depot B",
+    "subject_kind": "DELIVERY_MADE",
+    "subject_ref": "order-42",
+    "time_zone": "UTC",
+    "claim": "The supplier delivered 100 widgets to Depot B on 2026-10-10",
+    "criteria": [
+      {
+        "text": "100 widgets were delivered to Depot B on 2026-10-10",
+        "needs_independent": false
+      }
+    ],
+    "allowed": [
+      "PHOTO",
+      "TEXT_DOCUMENT"
+    ],
+    "respondent": "0x1b7e06BcD6D4b15B14EcaC6BAf40DB1757d9062f",
+    "held_sum_wei": "1000000000000000000",
+    "funder": "CLAIMANT",
+    "challenge_bond_wei": "100000000000000000",
+    "evidence_period_seconds": 86400,
+    "challenge_window_seconds": 3600
+  },
+  "state": "FINAL",
+  "decision": {
+    "bound": {
+      "findings": "a majority of validators, each running the assessment itself, reproduced for each criterion whether it is supported, and so whether the claim is",
+      "leader_recorded": [
+        "the finer label of a criterion that is not supported, and so of the overall finding",
+        "floors",
+        "rationale",
+        "basis",
+        "contrary",
+        "missing",
+        "limitations",
+        "observations",
+        "instructions_found",
+        "seen_ids"
+      ]
+    },
+    "calibrated": true,
+    "case_id": "PR-0001",
+    "challenge_window_ends": "2026-10-23T17:12:25Z",
+    "criteria": [
+      {
+        "basis": [],
+        "contrary": [
+          "E-0001"
+        ],
+        "finding": "INSUFFICIENT",
+        "floors": [],
+        "id": "C1",
+        "missing": [
+          "A delivery receipt, signed proof of receipt, shipping record, or clear photo/document showing 100 widgets reached Depot B on 2026-10-10"
+        ],
+        "model_finding": "INSUFFICIENT",
+        "needs_independent": false,
+        "rationale": "E-0001 shows a document page with the text \"ORDER OF THE MOST EXCELLENT ORDER\" and a date of September 14, 2020. It does not show widgets, Depot B, a recipient, a delivery event, or the date 2026-10-10. Because the only filed item is unrelated on its face to the alleged delivery, the evidence is too thin to determine whether 100 widgets were delivered to Depot B on 2026-10-10.",
+        "text": "100 widgets were delivered to Depot B on 2026-10-10"
+      }
+    ],
+    "decided_at": "2026-10-23T16:12:25Z",
+    "decision_digest": "d82e676be9edf4dcf66dc77c7661ef476da02970be95bd15a7970e7bb43045cc",
+    "decision_id": "D-0001",
+    "evidence": [
+      {
+        "declared_capture": "",
+        "evidence_id": "E-0001",
+        "filed_at": "2026-10-23T16:09:47Z",
+        "first_filed_in": "",
+        "kind": "PHOTO",
+        "new_in_challenge": false,
+        "reuse": "",
+        "role": "CLAIMANT",
+        "sha256": "64f0616b22f225f81d30c1718000c5983aecf2c05593eb98f19793fef97bbb87"
+      }
+    ],
+    "instructions_found": [],
+    "kind": "ASSESSMENT",
+    "limitations": [
+      "The assessment could only examine the single filed image and its legible text; it could not verify any unfiled shipping, receipt, or inventory records.",
+      "A photograph or document page shows only what is visible on it and does not by itself establish when a delivery occurred unless that is shown in the evidence."
+    ],
+    "manifest_digest": "439a2561c23a20d44cc9ac68d9413b4100ade8086ff63883a09c01eef3ce8e13",
+    "observations": [
+      {
+        "dates": [
+          "September 14, 2020"
+        ],
+        "evidence_id": "E-0001",
+        "quality": "POOR",
+        "seen": true,
+        "shows": "The image shows a page with a heading near the top left and a large grid of small square box icons below. It appears to be a document or form page rather than a photograph of delivered goods or a location. No visible damage or handling is apparent, and there is no visible sign of delivery activity.",
+        "subject_doubts": "The image appears to show a document page with repeated box graphics, not goods, documents being handed over, or a delivery scene.",
+        "text": [
+          "ORDER OF THE MOST EXCELLENT ORDER",
+          "Dated September 14, 2020"
+        ],
+        "text_cut": false
+      }
+    ],
+    "overall": "INSUFFICIENT",
+    "requested_by": "0x4184bc5E5444F250767E8D33A49817A9B4FB0df3",
+    "round": 1,
+    "scope": "Whether the filed evidence establishes each criterion the parties accepted before the evidence was filed. Not a legal finding, not a finding about who is telling the truth, and not proof of when a photograph was taken or that a file is authentic.",
+    "seen_ids": [
+      "E-0001"
+    ],
+    "status": "FINAL",
+    "superseded_by": "",
+    "supersedes": "",
+    "terms_digest": "3c798528fe12ae9edff50b2f9cbf153b1b3ceff0bb744197c837082a605c993a",
+    "terms_version": 1,
+    "unseen_ids": []
+  },
+  "receipt": {
+    "core": {
+      "case_id": "PR-0001",
+      "case_state": "FINAL",
+      "challenge": null,
+      "decision": {
+        "bound": {
+          "findings": "a majority of validators, each running the assessment itself, reproduced for each criterion whether it is supported, and so whether the claim is",
+          "leader_recorded": [
+            "the finer label of a criterion that is not supported, and so of the overall finding",
+            "floors",
+            "rationale",
+            "basis",
+            "contrary",
+            "missing",
+            "limitations",
+            "observations",
+            "instructions_found",
+            "seen_ids"
+          ]
+        },
+        "calibrated": true,
+        "case_id": "PR-0001",
+        "challenge_window_ends": "2026-10-23T17:12:25Z",
+        "criteria": [
+          {
+            "basis": [],
+            "contrary": [
+              "E-0001"
+            ],
+            "finding": "INSUFFICIENT",
+            "floors": [],
+            "id": "C1",
+            "missing": [
+              "A delivery receipt, signed proof of receipt, shipping record, or clear photo/document showing 100 widgets reached Depot B on 2026-10-10"
+            ],
+            "model_finding": "INSUFFICIENT",
+            "needs_independent": false,
+            "rationale": "E-0001 shows a document page with the text \"ORDER OF THE MOST EXCELLENT ORDER\" and a date of September 14, 2020. It does not show widgets, Depot B, a recipient, a delivery event, or the date 2026-10-10. Because the only filed item is unrelated on its face to the alleged delivery, the evidence is too thin to determine whether 100 widgets were delivered to Depot B on 2026-10-10.",
+            "text": "100 widgets were delivered to Depot B on 2026-10-10"
+          }
+        ],
+        "decided_at": "2026-10-23T16:12:25Z",
+        "decision_digest": "d82e676be9edf4dcf66dc77c7661ef476da02970be95bd15a7970e7bb43045cc",
+        "decision_id": "D-0001",
+        "evidence": [
+          {
+            "declared_capture": "",
+            "evidence_id": "E-0001",
+            "filed_at": "2026-10-23T16:09:47Z",
+            "first_filed_in": "",
+            "kind": "PHOTO",
+            "new_in_challenge": false,
+            "reuse": "",
+            "role": "CLAIMANT",
+            "sha256": "64f0616b22f225f81d30c1718000c5983aecf2c05593eb98f19793fef97bbb87"
+          }
+        ],
+        "instructions_found": [],
+        "kind": "ASSESSMENT",
+        "limitations": [
+          "The assessment could only examine the single filed image and its legible text; it could not verify any unfiled shipping, receipt, or inventory records.",
+          "A photograph or document page shows only what is visible on it and does not by itself establish when a delivery occurred unless that is shown in the evidence."
+        ],
+        "manifest_digest": "439a2561c23a20d44cc9ac68d9413b4100ade8086ff63883a09c01eef3ce8e13",
+        "observations": [
+          {
+            "dates": [
+              "September 14, 2020"
+            ],
+            "evidence_id": "E-0001",
+            "quality": "POOR",
+            "seen": true,
+            "shows": "The image shows a page with a heading near the top left and a large grid of small square box icons below. It appears to be a document or form page rather than a photograph of delivered goods or a location. No visible damage or handling is apparent, and there is no visible sign of delivery activity.",
+            "subject_doubts": "The image appears to show a document page with repeated box graphics, not goods, documents being handed over, or a delivery scene.",
+            "text": [
+              "ORDER OF THE MOST EXCELLENT ORDER",
+              "Dated September 14, 2020"
+            ],
+            "text_cut": false
+          }
+        ],
+        "overall": "INSUFFICIENT",
+        "requested_by": "0x4184bc5E5444F250767E8D33A49817A9B4FB0df3",
+        "round": 1,
+        "scope": "Whether the filed evidence establishes each criterion the parties accepted before the evidence was filed. Not a legal finding, not a finding about who is telling the truth, and not proof of when a photograph was taken or that a file is authentic.",
+        "seen_ids": [
+          "E-0001"
+        ],
+        "status": "FINAL",
+        "superseded_by": "",
+        "supersedes": "",
+        "terms_digest": "3c798528fe12ae9edff50b2f9cbf153b1b3ceff0bb744197c837082a605c993a",
+        "terms_version": 1,
+        "unseen_ids": []
+      },
+      "history": [
+        {
+          "decided_at": "2026-10-23T16:12:25Z",
+          "decision_digest": "d82e676be9edf4dcf66dc77c7661ef476da02970be95bd15a7970e7bb43045cc",
+          "decision_id": "D-0001",
+          "kind": "ASSESSMENT",
+          "overall": "INSUFFICIENT",
+          "round": 1,
+          "status": "FINAL"
+        }
+      ],
+      "parties": {
+        "claimant": "0x4184bc5E5444F250767E8D33A49817A9B4FB0df3",
+        "inspector": "",
+        "respondent": "0x1b7e06BcD6D4b15B14EcaC6BAf40DB1757d9062f"
+      },
+      "rules": "pavvl-rules-1",
+      "schema": "pavvl.receipt/1",
+      "settlement": {
+        "at": "2026-10-23T20:49:49Z",
+        "held_sum_wei": "1000000000000000000",
+        "to": "0x1b7e06BcD6D4b15B14EcaC6BAf40DB1757d9062f",
+        "to_role": "RESPONDENT",
+        "why": "the final finding is INSUFFICIENT, so the claim was not established"
+      },
+      "terms": {
+        "claim": "The supplier delivered 100 widgets to Depot B on 2026-10-10",
+        "criteria": [
+          {
+            "id": "C1",
+            "needs_independent": false,
+            "text": "100 widgets were delivered to Depot B on 2026-10-10"
+          }
+        ],
+        "deadline": "",
+        "digest": "3c798528fe12ae9edff50b2f9cbf153b1b3ceff0bb744197c837082a605c993a",
+        "limitations": [],
+        "subject_kind": "DELIVERY_MADE",
+        "subject_ref": "order-42",
+        "time_zone": "UTC",
+        "title": "Delivery of 100 widgets to Depot B",
+        "version": 1,
+        "window_start": ""
+      }
+    },
+    "digest": "7c408bcd39fc9eb6b4d304f434c14b6f33d1125b231dff1854460c4fbd1525b5"
+  }
+}

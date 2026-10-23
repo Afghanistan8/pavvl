@@ -40,6 +40,28 @@ node scripts/deploy.mjs --verify
 The machine-written record is in [`deployments/studionet.json`](deployments/studionet.json),
 with the raw on-chain source and receipt under [`deployments/proofs/`](deployments/proofs).
 
+### Live cases
+
+Two cases ran end to end on this deployment, both finalized, so a reviewer can
+read real data rather than a description of it:
+
+| Case | Evidence | Finding | Settlement |
+|---|---|---|---|
+| `PR-0002` | a photograph the validators examined themselves, a delivery note, a receipt | `SUPPORTED`, no floor applied | 1 GEN to the claimant |
+| `PR-0001` | a photograph that did not establish the claim | `INSUFFICIENT` | 1 GEN released to the respondent |
+
+```bash
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_case --args PR-0002
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_decision --args D-0002
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_receipt --args PR-0002
+```
+
+`get_decision` shows `calibrated: true` and the image ids the validators
+examined, so the record itself says the finding came from nodes that looked at
+the pictures themselves. The machine-written copies are in
+[`deployments/demo-case-PR-0001.json`](deployments/demo-case-PR-0001.json) and
+[`deployments/demo-case-PR-0002.json`](deployments/demo-case-PR-0002.json).
+
 ---
 
 ## The trust model in one screen

@@ -76,6 +76,33 @@ did not see, so a decision needs a majority that actually looked. The tests show
 sighted validator calibrating, examining, and agreeing; a blind validator dissenting
 without ever examining; and a blind leader recording no decision.
 
+## 4c. Is there a live case to read?
+
+```bash
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_case --args PR-0002
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_decision --args D-0002
+genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_receipt --args PR-0002
+```
+
+Two cases ran to completion on this deployment and are finalized, so the
+property in 4b can be read off the chain rather than taken on trust:
+
+- `PR-0002` — the claimant filed a photograph, a delivery note and the respondent
+  a receipt. The decision carries `calibrated: true` and `seen_ids: ["E-0002"]`:
+  the node proved it receives images, and the photograph it examined is the one
+  the finding rests on. The finding is `SUPPORTED` with no floor applied, and the
+  held sum moved to the claimant.
+- `PR-0001` — the same flow with a photograph that did not establish the claim.
+  The finding is `INSUFFICIENT` and the held sum was released to the respondent.
+
+The machine-written copies are `deployments/demo-case-PR-0001.json` and
+`deployments/demo-case-PR-0002.json`. To run the flow yourself from nothing:
+
+```bash
+node probe/pavvl_demo_case.mjs
+node probe/pavvl_demo_case.mjs --finalize
+```
+
 ## 5. Does anything but SUPPORTED pay the claimant?
 
 ```bash
