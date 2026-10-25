@@ -48,7 +48,7 @@ read real data rather than a description of it:
 | Case | Evidence | Finding | Settlement |
 |---|---|---|---|
 | `PR-0001` | a photograph the validators examined themselves, a delivery note, a receipt | `SUPPORTED`, no floor applied | 1 GEN to the claimant |
-| `PR-0002` | a photograph that did not establish the claim | `INSUFFICIENT` | 1 GEN released to the respondent |
+| `PR-0002` | the same evidence filed the same way | `SUPPORTED`, no floor applied | 1 GEN to the claimant |
 
 ```bash
 genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_case --args PR-0001

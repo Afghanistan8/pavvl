@@ -9,13 +9,13 @@ strings below and re-run:
 
 import pathlib
 
-CONTRACT = "0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234"
+CONTRACT = "0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7"
 EXPLORER = f"https://explorer-studio.genlayer.com/address/{CONTRACT}"
 REPO = "https://github.com/Afghanistan8/pavvl"
-DEPLOY_TX = "0x9dec4f862550247051cb81c96461dc60d5dfe9134445de78c81c107133b496f9"
-SOURCE_SHA = "730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1"
-REJECTED_ADDR = "0xAcBdea1B9CA3863355C1081Dd3c302b1aaDc2144"
-REJECTED_SHA = "8fc10d6f8c62b3a62c02fa449e0ee5ec2ce56cf9cb0db73959767d3276d4e019"
+DEPLOY_TX = "0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80"
+SOURCE_SHA = "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd"
+REJECTED_ADDR = "0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234"
+REJECTED_SHA = "730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1"
 
 PROJECT_NAME = "Pavvl"
 PRIMARY_TAG = "Dispute Resolution"
@@ -44,12 +44,11 @@ DESCRIPTION = (
 )
 
 PROVE = (
-    "Deployed on Studionet at 0x5F3fcc60…; its on-chain source SHA-256 equals this "
+    "Deployed on Studionet at 0x6173BD4F…; its on-chain source SHA-256 equals this "
     "repository's, and `node scripts/deploy.mjs --verify` prints verified true. Live case "
-    "PR-0002 is FINAL: the respondent accepted a frozen terms digest, the claimant filed a "
+    "PR-0001 is FINAL: the respondent accepted a frozen terms digest, the claimant filed a "
     "photograph and both sides a document, the validators examined that photograph themselves "
-    "and agreed SUPPORTED with no floor, and the held sum moved to the claimant. "
-    "PR-0001 is the same flow ending INSUFFICIENT, its held sum released to the respondent."
+    "and agreed SUPPORTED with no floor, and the held sum moved to the claimant."
 )
 
 STEPS = [
@@ -67,20 +66,20 @@ STEPS = [
     ),
     (
         "Read a live case",
-        "Call get_case PR-0002. It returns the terms digest the respondent accepted, the filed "
+        "Call get_case PR-0001. It returns the terms digest the respondent accepted, the filed "
         "evidence with the SHA-256 the contract computed over the bytes it stored, and the "
         "standing decision id.",
     ),
     (
         "Read what the validators decided",
-        "Call get_decision D-0002. It returns the finding per criterion, the floors that were "
+        "Call get_decision D-0001. It returns the finding per criterion, the floors that were "
         "applied, which evidence each validator examined (seen_ids), and the rationale the "
         "agreeing validators reproduced.",
     ),
     (
         "Settle and read the receipt",
-        "The demo cases are already finalized: PR-0002's held sum moved to the claimant on a "
-        "final SUPPORTED, PR-0001's to the respondent on INSUFFICIENT. get_receipt returns the "
+        "The demo case is already finalized: PR-0001's held sum moved to the claimant on a "
+        "final SUPPORTED. get_receipt returns the "
         "receipt digest, which recomputes from chain state.",
     ),
 ]
@@ -92,26 +91,24 @@ EVIDENCE = (
     f"On-chain source SHA-256: {SOURCE_SHA}\n"
     "Reviewer guide: docs/REVIEW_TARGET.md - every property, with the exact command to check "
     "it.\n"
-    "Live finalized cases: PR-0002 (SUPPORTED - photographed evidence examined by the "
-    "validators, held sum paid to the claimant) and PR-0001 (INSUFFICIENT - held sum released "
-    "to the respondent)."
+    "Live finalized case: PR-0001 (SUPPORTED - photographed evidence examined by the "
+    "validators, held sum paid to the claimant)."
+    ""
 )
 
 APPEAL = (
-    "Addressed the steward's finding: a node that cannot receive images no longer assesses a "
-    "case by reading the leader's descriptions.\n\n"
-    "_borrow() and every borrowed marker are gone. _assess() refuses to assess when a case has "
-    "image evidence and the node fails the calibration image: as leader it errors and no "
-    "decision is recorded; as validator the refusal is a dissent. A decision needs a majority "
-    "that examined every image itself. Nor a soft warning: a node that cannot open one image "
-    "cannot cite it (F5), so a finding resting on it is floored to INSUFFICIENT (F1), not "
-    "SUPPORTED (F3).\n\n"
-    f"Redeployed: 0xAcBdea1B… becomes 0x5F3fcc60… (source sha256 {SOURCE_SHA[:8]}…), "
-    "FINALIZED / MAJORITY_AGREE; deploy.mjs --verify prints verified true.\n\n"
-    "Proof: 79 tests pass, including tests/direct/test_validators.py - a sighted validator "
-    "examines the image itself and agrees; a blind validator dissents without examining; a "
-    "blind leader records no decision. adversarial_review.mjs fails the build if borrowing "
-    "returns."
+    "Addressed the steward's second finding: the validators did not bind which images were seen. "
+    "_dissent compared the leader's claimed seen_ids against a validator's own set in one direction "
+    "only, so a leader could claim an image no validator saw, have it recorded as seen, and take "
+    "the retry right away from the side the decision went against.\n\n"
+    "The counted seen set - a node's own images plus any copy of the same bytes - is now compared in "
+    "both directions, and a validator dissents on any difference: it will not stand behind a result "
+    "resting on less than it saw, nor certify one resting on an image it never saw. The panel "
+    "succeeds only when every validator reproduced that set.\n\n"
+    f"Redeployed: 0x5F3fcc60… becomes 0x6173BD4F… (sha256 {SOURCE_SHA[:8]}…), FINALIZED / "
+    "MAJORITY_AGREE; deploy.mjs --verify prints verified true.\n\n"
+    "Proof: 85 tests pass, including tests/direct/test_seen_binding.py - a validator dissents when "
+    "the leader counts an image it did not see, and when the leader omits one it did see."
 )
 
 LIMITS = [

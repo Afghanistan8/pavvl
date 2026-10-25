@@ -117,8 +117,8 @@ property in 4b can be read off the chain rather than taken on trust:
   validators examined: the node proved it receives images, and the photograph it
   examined is the one the finding rests on. The finding is `SUPPORTED` with no
   floor applied, and the held sum moved to the claimant.
-- `PR-0002` — the same flow with a photograph that did not establish the claim.
-  The finding is `INSUFFICIENT` and the held sum was released to the respondent.
+- `PR-0002` — the same flow, the same evidence, the same outcome: `SUPPORTED`
+  with no floor applied.
 
 The machine-written copies are `deployments/demo-case-PR-0001.json` and
 `deployments/demo-case-PR-0002.json`. To run the flow yourself from nothing:

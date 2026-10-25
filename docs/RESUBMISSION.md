@@ -26,9 +26,9 @@ It suits two parties who disagree about a fact: the standard is set first, evide
 
 1. **Open the deployed contract** — Go to the Studio Explorer address page for the contract and read its source and its finalized deployment transaction. The source on chain is byte-for-byte this repository's contracts/pavvl.py.
 2. **Check who holds authority** — Call get_governance. It reports an empty owner, admin and operator, pausable false, upgradeable false, has_admin_key false, has_upgrade_key false and deployer_has_power false, so the deployer cannot move anything.
-3. **Read a live case** — Call get_case PR-0002. It returns the terms digest the respondent accepted, the filed evidence with the SHA-256 the contract computed over the bytes it stored, and the standing decision id.
-4. **Read what the validators decided** — Call get_decision D-0002. It returns the finding per criterion, the floors that were applied, which evidence each validator examined (seen_ids), and the rationale the agreeing validators reproduced.
-5. **Settle and read the receipt** — The demo cases are already finalized: PR-0002's held sum moved to the claimant on a final SUPPORTED, PR-0001's to the respondent on INSUFFICIENT. get_receipt returns the receipt digest, which recomputes from chain state.
+3. **Read a live case** — Call get_case PR-0001. It returns the terms digest the respondent accepted, the filed evidence with the SHA-256 the contract computed over the bytes it stored, and the standing decision id.
+4. **Read what the validators decided** — Call get_decision D-0001. It returns the finding per criterion, the floors that were applied, which evidence each validator examined (seen_ids), and the rationale the agreeing validators reproduced.
+5. **Settle and read the receipt** — The demo case is already finalized: PR-0001's held sum moved to the claimant on a final SUPPORTED. get_receipt returns the receipt digest, which recomputes from chain state.
 
 ## 05 · Demo URL
 
@@ -36,7 +36,7 @@ Optional. A YouTube or X post link, if you record one.
 
 ## 06 · Review verification
 
-Deployed on Studionet at 0x6173BD4F…; its on-chain source SHA-256 equals this repository's, and `node scripts/deploy.mjs --verify` prints verified true. Live case PR-0002 is FINAL: the respondent accepted a frozen terms digest, the claimant filed a photograph and both sides a document, the validators examined that photograph themselves and agreed SUPPORTED with no floor, and the held sum moved to the claimant. PR-0001 is the same flow ending INSUFFICIENT, its held sum released to the respondent.
+Deployed on Studionet at 0x6173BD4F…; its on-chain source SHA-256 equals this repository's, and `node scripts/deploy.mjs --verify` prints verified true. Live case PR-0001 is FINAL: the respondent accepted a frozen terms digest, the claimant filed a photograph and both sides a document, the validators examined that photograph themselves and agreed SUPPORTED with no floor, and the held sum moved to the claimant.
 
 **Contract links**
 
@@ -54,14 +54,14 @@ Deployer address: 0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b (https://explorer-s
 Finalized deployment transaction: 0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80
 On-chain source SHA-256: 8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd
 Reviewer guide: docs/REVIEW_TARGET.md - every property, with the exact command to check it.
-Live finalized cases: PR-0002 (SUPPORTED - photographed evidence examined by the validators, held sum paid to the claimant) and PR-0001 (INSUFFICIENT - held sum released to the respondent).
+Live finalized case: PR-0001 (SUPPORTED - photographed evidence examined by the validators, held sum paid to the claimant).
 
 ## 09 · Appeal reason
 
-Addressed the steward's finding: a node that cannot receive images no longer assesses a case by reading the leader's descriptions.
+Addressed the steward's second finding: the validators did not bind which images were seen. _dissent compared the leader's claimed seen_ids against a validator's own set in one direction only, so a leader could claim an image no validator saw, have it recorded as seen, and take the retry right away from the side the decision went against.
 
-_borrow() and every borrowed marker are gone. _assess() refuses to assess when a case has image evidence and the node fails the calibration image: as leader it errors and no decision is recorded; as validator the refusal is a dissent. A decision needs a majority that examined every image itself. Nor a soft warning: a node that cannot open one image cannot cite it (F5), so a finding resting on it is floored to INSUFFICIENT (F1), not SUPPORTED (F3).
+The counted seen set - a node's own images plus any copy of the same bytes - is now compared in both directions, and a validator dissents on any difference: it will not stand behind a result resting on less than it saw, nor certify one resting on an image it never saw. The panel succeeds only when every validator reproduced that set.
 
-Redeployed: 0x5F3fcc60… becomes 0x6173BD4F… (source sha256 8f449634…), FINALIZED / MAJORITY_AGREE; deploy.mjs --verify prints verified true.
+Redeployed: 0x5F3fcc60… becomes 0x6173BD4F… (sha256 8f449634…), FINALIZED / MAJORITY_AGREE; deploy.mjs --verify prints verified true.
 
-Proof: 79 tests pass, including tests/direct/test_validators.py - a sighted validator examines the image itself and agrees; a blind validator dissents without examining; a blind leader records no decision. adversarial_review.mjs fails the build if borrowing returns.
+Proof: 85 tests pass, including tests/direct/test_seen_binding.py - a validator dissents when the leader counts an image it did not see, and when the leader omits one it did see.
