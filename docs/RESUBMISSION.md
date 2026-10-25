@@ -36,23 +36,23 @@ Optional. A YouTube or X post link, if you record one.
 
 ## 06 · Review verification
 
-Deployed on Studionet at 0x5F3fcc60…; its on-chain source SHA-256 equals this repository's, and `node scripts/deploy.mjs --verify` prints verified true. Live case PR-0002 is FINAL: the respondent accepted a frozen terms digest, the claimant filed a photograph and both sides a document, the validators examined that photograph themselves and agreed SUPPORTED with no floor, and the held sum moved to the claimant. PR-0001 is the same flow ending INSUFFICIENT, its held sum released to the respondent.
+Deployed on Studionet at 0x6173BD4F…; its on-chain source SHA-256 equals this repository's, and `node scripts/deploy.mjs --verify` prints verified true. Live case PR-0002 is FINAL: the respondent accepted a frozen terms digest, the claimant filed a photograph and both sides a document, the validators examined that photograph themselves and agreed SUPPORTED with no floor, and the held sum moved to the claimant. PR-0001 is the same flow ending INSUFFICIENT, its held sum released to the respondent.
 
 **Contract links**
 
-- https://explorer-studio.genlayer.com/address/0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234
+- https://explorer-studio.genlayer.com/address/0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7
 
 ## 07 · Project links
 
-- **Website:** https://explorer-studio.genlayer.com/address/0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234
+- **Website:** https://explorer-studio.genlayer.com/address/0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7
 - **GitHub:** https://github.com/Afghanistan8/pavvl
 
 ## 08 · Evidence & Supporting Information
 
 One git/GitHub repository: https://github.com/Afghanistan8/pavvl
-Deployer address: 0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b (https://explorer-studio.genlayer.com/address/0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234)
-Finalized deployment transaction: 0x9dec4f862550247051cb81c96461dc60d5dfe9134445de78c81c107133b496f9
-On-chain source SHA-256: 730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1
+Deployer address: 0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b (https://explorer-studio.genlayer.com/address/0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7)
+Finalized deployment transaction: 0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80
+On-chain source SHA-256: 8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd
 Reviewer guide: docs/REVIEW_TARGET.md - every property, with the exact command to check it.
 Live finalized cases: PR-0002 (SUPPORTED - photographed evidence examined by the validators, held sum paid to the claimant) and PR-0001 (INSUFFICIENT - held sum released to the respondent).
 
@@ -62,6 +62,6 @@ Addressed the steward's finding: a node that cannot receive images no longer ass
 
 _borrow() and every borrowed marker are gone. _assess() refuses to assess when a case has image evidence and the node fails the calibration image: as leader it errors and no decision is recorded; as validator the refusal is a dissent. A decision needs a majority that examined every image itself. Nor a soft warning: a node that cannot open one image cannot cite it (F5), so a finding resting on it is floored to INSUFFICIENT (F1), not SUPPORTED (F3).
 
-Redeployed: 0xAcBdea1B… becomes 0x5F3fcc60… (source sha256 730bc0c3…), FINALIZED / MAJORITY_AGREE; deploy.mjs --verify prints verified true.
+Redeployed: 0x5F3fcc60… becomes 0x6173BD4F… (source sha256 8f449634…), FINALIZED / MAJORITY_AGREE; deploy.mjs --verify prints verified true.
 
 Proof: 79 tests pass, including tests/direct/test_validators.py - a sighted validator examines the image itself and agrees; a blind validator dissents without examining; a blind leader records no decision. adversarial_review.mjs fails the build if borrowing returns.

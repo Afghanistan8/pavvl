@@ -9,7 +9,7 @@ exact commands to check them with. Nothing here asks you to trust the authors.
   dependencies beyond the pinned GenVM std.
 - Tests: [`tests/direct/`](../tests/direct) — Direct Mode against the real SDK.
 - Deploy driver: [`scripts/deploy.mjs`](../scripts/deploy.mjs).
-- Deployment of record: `0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234` on Studionet
+- Deployment of record: `0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7` on Studionet
   (chain 61999).
 
 ## 1. Does the running contract match this repository?
@@ -22,11 +22,11 @@ Expect `verified true` and a `source sha256` equal to `onchain sha256`. If they
 disagree, the script exits non-zero. You can also check independently:
 
 ```bash
-genlayer code 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 | sha256sum
+genlayer code 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 | sha256sum
 ```
 
 The on-chain source is also stored verbatim at
-`deployments/proofs/studionet-0x5F3fcc6….genlayer.py`.
+`deployments/proofs/studionet-0x6173BD4F….genlayer.py`.
 
 ## 2. Is it really Studionet-only?
 
@@ -42,7 +42,7 @@ the static test `test_every_write_guards_the_chain` asserts that from the source
 ## 3. Is there really no owner, admin, or upgrade path?
 
 ```bash
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_governance
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_governance
 python -m pytest tests/direct/test_governance.py tests/direct/test_receipt.py -q
 ```
 
@@ -104,20 +104,20 @@ as unseen.
 ## 4c. Is there a live case to read?
 
 ```bash
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_case --args PR-0002
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_decision --args D-0002
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_receipt --args PR-0002
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_case --args PR-0001
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_decision --args D-0001
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_receipt --args PR-0001
 ```
 
 Two cases ran to completion on this deployment and are finalized, so the
 property in 4b can be read off the chain rather than taken on trust:
 
-- `PR-0002` — the claimant filed a photograph, a delivery note and the respondent
-  a receipt. The decision carries `calibrated: true` and `seen_ids: ["E-0002"]`:
-  the node proved it receives images, and the photograph it examined is the one
-  the finding rests on. The finding is `SUPPORTED` with no floor applied, and the
-  held sum moved to the claimant.
-- `PR-0001` — the same flow with a photograph that did not establish the claim.
+- `PR-0001` — the claimant filed a photograph, a delivery note and the respondent
+  a receipt. The decision carries `calibrated: true` and the image ids the
+  validators examined: the node proved it receives images, and the photograph it
+  examined is the one the finding rests on. The finding is `SUPPORTED` with no
+  floor applied, and the held sum moved to the claimant.
+- `PR-0002` — the same flow with a photograph that did not establish the claim.
   The finding is `INSUFFICIENT` and the held sum was released to the respondent.
 
 The machine-written copies are `deployments/demo-case-PR-0001.json` and

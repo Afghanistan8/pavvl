@@ -32,7 +32,7 @@ const { createClient, createAccount } = await import(SDK);
 const { studionet: chain } = await import(CHAINS);
 
 const RPC = "https://studio.genlayer.com/api";
-const CONTRACT = process.env.PAVVL_CONTRACT || "0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234";
+const CONTRACT = process.env.PAVVL_CONTRACT || "0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7";
 const CLAIMANT = process.env.PAVVL_CLAIMANT_ACCOUNT || "deployer";
 const RESPONDENT = process.env.PAVVL_RESPONDENT_ACCOUNT || "hatchmade-reviewer";
 const TITLE = process.env.PAVVL_CASE_TITLE || "Delivery of 100 widgets to Depot B";

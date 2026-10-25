@@ -1,0 +1,34 @@
+{
+  "project": "Pavvl",
+  "network": "studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "explorer": "https://explorer-studio.genlayer.com",
+  "contract": "contracts/pavvl.py",
+  "contract_address": "0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7",
+  "deployer": "0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b",
+  "transaction": "0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80",
+  "finalized": true,
+  "result": "MAJORITY_AGREE",
+  "deployed_at": "2026-10-25T16:06:13.747565+00:00",
+  "rounds": 1,
+  "genvm": "v0.2.16",
+  "runner": "py-genlayer:132536jbnxkd1axfxg5rpfr5b60cr11adm2y4r90hgn0l59qsp9w",
+  "source": {
+    "path": "contracts/pavvl.py",
+    "bytes": 148079,
+    "sha256": "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd",
+    "canonical_sha256": "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd"
+  },
+  "onchain_source_sha256": "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd",
+  "verified": true,
+  "verified_at": "2026-10-25T16:07:00.045Z",
+  "toolchain": {
+    "genlayer_cli": "0.39.2",
+    "node": "v24.15.0"
+  },
+  "header": {
+    "genvm": "v0.2.16",
+    "depends": "py-genlayer:132536jbnxkd1axfxg5rpfr5b60cr11adm2y4r90hgn0l59qsp9w"
+  }
+}

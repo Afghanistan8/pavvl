@@ -23,12 +23,12 @@ can invent authority the contract would refuse.
 
 | | |
 |---|---|
-| Contract | [`0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234`](https://explorer-studio.genlayer.com/address/0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234) |
-| Deploy transaction | `0x9dec4f862550247051cb81c96461dc60d5dfe9134445de78c81c107133b496f9` |
+| Contract | [`0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7`](https://explorer-studio.genlayer.com/address/0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7) |
+| Deploy transaction | `0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80` |
 | Status / result | `FINALIZED` / `MAJORITY_AGREE` |
 | Deployer | `0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b` |
-| Source SHA-256 | `730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1` |
-| On-chain source SHA-256 | `730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1` |
+| Source SHA-256 | `8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd` |
+| On-chain source SHA-256 | `8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd` |
 
 The two hashes above are equal: the source stored on chain is byte-for-byte the
 source in this repository. That is not a claim in a document — it is re-checkable:
@@ -47,13 +47,13 @@ read real data rather than a description of it:
 
 | Case | Evidence | Finding | Settlement |
 |---|---|---|---|
-| `PR-0002` | a photograph the validators examined themselves, a delivery note, a receipt | `SUPPORTED`, no floor applied | 1 GEN to the claimant |
-| `PR-0001` | a photograph that did not establish the claim | `INSUFFICIENT` | 1 GEN released to the respondent |
+| `PR-0001` | a photograph the validators examined themselves, a delivery note, a receipt | `SUPPORTED`, no floor applied | 1 GEN to the claimant |
+| `PR-0002` | a photograph that did not establish the claim | `INSUFFICIENT` | 1 GEN released to the respondent |
 
 ```bash
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_case --args PR-0002
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_decision --args D-0002
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_receipt --args PR-0002
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_case --args PR-0001
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_decision --args D-0001
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_receipt --args PR-0001
 ```
 
 `get_decision` shows `calibrated: true` and the image ids the validators
@@ -87,7 +87,7 @@ There is no owner, no admin, no operator, and no upgrade key. That is readable
 from the chain itself:
 
 ```
-genlayer call 0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234 get_governance
+genlayer call 0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7 get_governance
 ```
 
 ---

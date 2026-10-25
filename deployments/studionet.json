@@ -5,24 +5,24 @@
   "rpc": "https://studio.genlayer.com/api",
   "explorer": "https://explorer-studio.genlayer.com",
   "contract": "contracts/pavvl.py",
-  "contract_address": "0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234",
+  "contract_address": "0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7",
   "deployer": "0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b",
-  "transaction": "0x9dec4f862550247051cb81c96461dc60d5dfe9134445de78c81c107133b496f9",
+  "transaction": "0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80",
   "finalized": true,
   "result": "MAJORITY_AGREE",
-  "deployed_at": "2026-10-23T06:16:10.439728+00:00",
+  "deployed_at": "2026-10-25T16:06:13.747565+00:00",
   "rounds": 1,
   "genvm": "v0.2.16",
   "runner": "py-genlayer:132536jbnxkd1axfxg5rpfr5b60cr11adm2y4r90hgn0l59qsp9w",
   "source": {
     "path": "contracts/pavvl.py",
-    "bytes": 147062,
-    "sha256": "730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1",
-    "canonical_sha256": "730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1"
+    "bytes": 148079,
+    "sha256": "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd",
+    "canonical_sha256": "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd"
   },
-  "onchain_source_sha256": "730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1",
+  "onchain_source_sha256": "8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd",
   "verified": true,
-  "verified_at": "2026-10-23T06:16:52.671Z",
+  "verified_at": "2026-10-25T16:07:00.045Z",
   "toolchain": {
     "genlayer_cli": "0.39.2",
     "node": "v24.15.0"

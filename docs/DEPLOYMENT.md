@@ -91,10 +91,10 @@ are the artefacts an outside reviewer can hash independently.
 
 | | |
 |---|---|
-| Contract | `0x5F3fcc6094Fe68D2Db1D0F83e012Ad61E2Ffd234` |
-| Transaction | `0x9dec4f862550247051cb81c96461dc60d5dfe9134445de78c81c107133b496f9` |
+| Contract | `0x6173BD4FC60273bDD03a251B0C302cdFE5cD80E7` |
+| Transaction | `0xa523c2420f99a97ef7221e6038125d26a7f4b5ec8d2a058f4c6f439e54f90c80` |
 | Deployer | `0xeF18C89f28e4f1Aa2a7f180efcE01b423f7bDE0b` |
-| Source SHA-256 | `730bc0c35cc6ae786e69bc5939895e757dfaa74b0b165cbac3f52d05ffe2e0b1` |
+| Source SHA-256 | `8f449634455ae64371162237596024d9c78827c49b0af0a2364b01b0114379fd` |
 | Verified | yes — on-chain source hash equals the repository source hash |
 
 ## Reading a deployment from a client
