@@ -138,6 +138,24 @@ decision needs a majority that actually examined the images.
 `test_a_blind_validator_dissents_instead_of_borrowing`,
 `test_a_blind_leader_cannot_produce_a_decision`.
 
+### T14 — A leader certifying an image the panel never saw
+The record's `seen_ids` and `unseen_ids` decide who may ask for the assessment
+again: the retry right is only granted when an image genuinely went unexamined.
+So the set must be the one the validators themselves examined, not the one the
+leader claimed. A validator compares the counted (twin-closed) seen set in **both**
+directions and dissents on any difference: it will not stand behind a result that
+rests on less than it saw, and it will not certify one that rests on an image it
+never saw. The panel therefore succeeds only when every voting validator
+reproduced the same counted set, and the record carries a set the validators
+examined. Without the second direction a leader could count an image nobody saw,
+and take the retry right away from the side the decision went against.
+→ `test_a_validator_dissents_when_the_leader_counts_an_image_it_did_not_see`,
+`test_a_validator_dissents_when_the_leader_omits_an_image_it_saw`,
+`test_a_validator_agrees_when_both_saw_the_same_images`,
+`test_a_twin_counts_as_seen_on_both_sides`,
+`test_the_record_reports_an_image_the_panel_never_saw_as_unseen`,
+`test_no_retry_when_the_panel_examined_every_image`.
+
 ## 4. Fails-closed summary
 
 Every uncertain path demotes toward `INSUFFICIENT`:

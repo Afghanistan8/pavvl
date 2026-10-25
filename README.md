@@ -72,7 +72,10 @@ the pictures themselves. The machine-written copies are in
    and documents. The contract stores the bytes and computes their digests itself.
 3. **Judge.** GenLayer validators re-examine the stored evidence against the frozen
    criteria. Consensus binds only whether each criterion is *supported* and whether
-   anything could be assessed at all.
+   anything could be assessed at all. Every voting validator examines the images
+   itself, and the set of images the panel saw is bound by all of them: a validator
+   will not certify a result that rests on an image it never saw, so the record
+   cannot claim an image was examined when it was not.
 4. **Settle.** Deterministic code applies fixed floors to the result and derives the
    overall finding. The held sum moves to the claimant **only** on a final
    `SUPPORTED` finding.
@@ -130,6 +133,15 @@ asserted here.
    but 61999, refuses a source without the pinned GenVM header, deploys, waits for
    finality, and proves the on-chain source matches the repository before writing a
    machine-readable manifest. No key is ever handled, printed, or stored.
+
+8. **The seen set is bound, not claimed.** The decision's `seen_ids` and
+   `unseen_ids` decide who may ask for the assessment again, so they must be the
+   images the validators examined. Every voting validator compares the counted
+   seen set in both directions and dissents on any difference: it will not stand
+   behind a result resting on less than it saw, and it will not certify one
+   resting on an image it never saw. A leader therefore cannot count an image the
+   panel did not examine and take the retry right away. See
+   [`docs/SECURITY.md`](docs/SECURITY.md) T14.
 
 ---
 

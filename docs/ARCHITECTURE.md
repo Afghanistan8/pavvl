@@ -123,10 +123,10 @@ evidence it is.
    the digits in a calibration image (`_sighted`). A node that passes examines
    every image itself and judges each criterion. Every validator re-runs the
    *same* assessment itself, from the same stored evidence — it calibrates,
-   examines, and judges, and agrees only with a leader that counted what it saw.
-   A node that cannot receive images refuses to assess a case that has any image
-   evidence: it cannot lead, and as a validator it dissents. No node ever votes
-   on another node's description of evidence it did not see.
+   examines, and judges, and agrees only with a leader that counted the same
+   images it did. A node that cannot receive images refuses to assess a case
+   that has any image evidence: it cannot lead, and as a validator it dissents.
+   No node ever votes on another node's description of evidence it did not see.
 
 ### What consensus binds
 
@@ -147,8 +147,17 @@ A validator also refuses the leader's result if:
 - the leader's result does not judge every criterion (`_judged`), or is malformed;
 - the leader claims to have seen images that are not on the case;
 - the leader fails to count images this node saw (copies count together);
+- the leader counts images this node did not see (copies count together);
 - the leader's flag list on evidence that tried to instruct the assessor
   (`instructions_found`) changes what the record binds.
+
+The counted seen set is compared **in both directions**, because the record's
+`seen_ids` and `unseen_ids` decide who may ask for the assessment again: the
+retry right is only granted when an image genuinely went unexamined. A leader
+that counts an image no validator saw would otherwise turn an unexamined image
+into a "seen" one, and take that retry right away. The panel therefore succeeds
+only when every voting validator reproduced the same counted seen set, and the
+record carries a set the validators themselves examined.
 
 ### The floors (F0–F8)
 

@@ -14,7 +14,9 @@
  *   5. the contract refuses every chain but Studionet (61999);
  *   6. no node judges another node's observations of the evidence: a node that
  *      cannot receive images refuses, and every voting validator examines it;
- *   7. committed text carries no model or assistant attribution.
+ *   7. the counted seen set is bound in both directions, so the record's seen
+ *      and unseen sets are the ones the validators themselves examined;
+ *   8. committed text carries no model or assistant attribution.
  *
  * Hard failures exit non-zero. Advisories are printed and do not fail the run.
  *
@@ -284,7 +286,37 @@ function checkIndependentExamination(source) {
   }
 }
 
-/** 7. No model/assistant attribution in committed text. */
+/** 7. The seen set is bound in both directions. */
+function checkSeenSetBinding(source) {
+  const dissent = /def _dissent\([^)]*\)[^:\n]*:(.*?)(?=\n\ndef |\n\nclass |\n\n@)/s.exec(source);
+  if (!dissent) {
+    fail("could not find _dissent");
+    return;
+  }
+  const body = dissent[1];
+  const bothWays =
+    /did not count images this node saw/.test(body) &&
+    /counted images this node did not see/.test(body);
+  if (!bothWays) {
+    fail(
+      "_dissent compares the counted seen set in one direction only, so a leader can claim an image no " +
+        "validator saw and take the retry right away",
+    );
+    return;
+  }
+  if (!/_counted_seen/.test(body)) {
+    fail("_dissent does not compare the counted (twin-closed) seen set on both sides");
+    return;
+  }
+  const record = /def _record\([^)]*\)[^:\n]*:(.*?)(?=\n    def |\n    @)/s.exec(source);
+  if (!record || !/_counted_seen/.test(record[1])) {
+    fail("the record's unseen set is not derived from the counted seen set");
+    return;
+  }
+  pass("the seen set is bound in both directions and the record's unseen set uses it");
+}
+
+/** 8. No model/assistant attribution in committed text. */
 function checkAttribution(files) {
   const self = fileURLToPath(import.meta.url);
   const hits = [];
@@ -330,6 +362,7 @@ function main() {
   checkNoGovernanceSurface(contractSource);
   checkStudionetOnly(contractSource);
   checkIndependentExamination(contractSource);
+  checkSeenSetBinding(contractSource);
   checkAttribution(walk(ROOT));
 
   report();

@@ -1065,6 +1065,14 @@ def _bound(settled: dict, criterion_ids: list) -> tuple:
             settled["overall"] == "NOT_ASSESSED")
 
 
+def _counted_seen(seen, ctx: dict) -> set:
+    """The images a node counts as seen: its own, plus any copy of the same
+    bytes. One definition, so the leader's claim and a validator's own
+    observation are compared like with like."""
+    twins = ctx.get("twins", {})
+    return set(seen) | {y for x in seen for y in twins.get(x, [])}
+
+
 def _dissent(theirs: dict, mine: dict, ctx: dict) -> str:
     """Why this node cannot stand behind the leader's result, or ''.
 
@@ -1073,9 +1081,12 @@ def _dissent(theirs: dict, mine: dict, ctx: dict) -> str:
     finer labels are not compared. Ids that are not on the case and criteria
     that are not in the terms are removed by the shape step, and a label
     outside the vocabulary is floored to INSUFFICIENT (F0), identically on
-    every node before comparing. The record must also not rest on less than
-    this node saw, and a flag on an item that tried to instruct the assessor,
-    held by only one of the two, must not change what the record binds."""
+    every node before comparing. The complete counted seen set is compared in
+    both directions, because the retry right turns on it: a record may not
+    rest on less than this node saw, and it may not rest on an image this
+    node did not see either. A flag on an item that tried to instruct the
+    assessor, held by only one of the two, must not change what the record
+    binds."""
     raw = theirs.get("raw") if isinstance(theirs, dict) else None
     if not isinstance(raw, dict) or not isinstance(raw.get("criteria"), list):
         return "the leader's result is malformed"
@@ -1088,11 +1099,18 @@ def _dissent(theirs: dict, mine: dict, ctx: dict) -> str:
     if any(x not in ctx["image_ids"] for x in claimed):
         return "the leader claims to have seen images that are not on this case"
     # Identical bytes are seen together, so a copy counts as seen when the
-    # leader saw its twin.
-    counted = set(claimed) | set(y for x in claimed for y in ctx.get("twins", {}).get(x, []))
-    dropped = [x for x in mine["shaped"]["seen_ids"] if x not in counted]
+    # leader saw its twin. The complete counted set is compared both ways: a
+    # leader that counts an image this node did not see is as much a dissent
+    # as one that omits an image this node saw, because the record's seen and
+    # unseen sets decide who may ask for the assessment again.
+    counted_theirs = _counted_seen(claimed, ctx)
+    counted_mine = _counted_seen(mine["shaped"]["seen_ids"], ctx)
+    dropped = sorted(counted_mine - counted_theirs)
     if dropped:
         return "the leader did not count images this node saw: " + ",".join(dropped)
+    extra = sorted(counted_theirs - counted_mine)
+    if extra:
+        return "the leader counted images this node did not see: " + ",".join(extra)
     settled = _settle(raw, ctx)
     ids = ctx["criterion_ids"]
     if _bound(settled, ids) != _bound(mine, ids):
@@ -2448,10 +2466,11 @@ class Pavvl(gl.Contract):
         # Identical bytes are seen together. An image is unexamined only when
         # no copy of it was seen: the retry right and the rules for a
         # readjudication round read this list, and they must agree with the
-        # findings, which counted a copy whose twin was seen.
-        twins = ctx.get("twins", {})
-        unseen = [x for x in ctx["image_ids"]
-                  if x not in seen and not any(y in seen for y in twins.get(x, []))]
+        # findings, which counted a copy whose twin was seen. The panel only
+        # succeeds when every validator reproduced this counted set, so what
+        # the leader claims here is what the validators examined.
+        counted = _counted_seen(seen, ctx)
+        unseen = [x for x in ctx["image_ids"] if x not in counted]
         d = {
             "decision_id": did, "case_id": c["case_id"], "round": rnd, "kind": kind, "scope": SCOPE,
             "terms_version": c["accepted_version"], "terms_digest": c["accepted_digest"],

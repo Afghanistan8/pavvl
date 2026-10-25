@@ -76,6 +76,31 @@ did not see, so a decision needs a majority that actually looked. The tests show
 sighted validator calibrating, examining, and agreeing; a blind validator dissenting
 without ever examining; and a blind leader recording no decision.
 
+## 4d. Is the seen set bound by the validators, not just claimed by the leader?
+
+```bash
+python -m pytest tests/direct/test_seen_binding.py -q
+node tools/adversarial_review.mjs
+```
+
+The decision's `seen_ids` and `unseen_ids` decide who may ask for the assessment
+again: the retry right is only granted when an image genuinely went unexamined. So
+the set must be the one the validators examined, not the one the leader claimed.
+
+A validator compares the counted seen set — its own images plus any copy of the same
+bytes — in **both** directions, and dissents on any difference. It will not stand
+behind a result that rests on less than it saw, and it will not certify one that
+rests on an image it never saw. The panel therefore succeeds only when every voting
+validator reproduced the same counted set, and the record carries a set the
+validators themselves examined.
+
+Without the second direction a leader could count an image no validator saw, and
+take the retry right away from the side the decision went against. The tests show a
+validator dissenting when the leader counts an image it did not see, dissenting when
+the leader omits one it did see, agreeing when both saw the same images, agreeing on
+a twin whose bytes were seen, and the record reporting an image the panel never saw
+as unseen.
+
 ## 4c. Is there a live case to read?
 
 ```bash

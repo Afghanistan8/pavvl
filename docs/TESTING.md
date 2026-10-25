@@ -42,6 +42,7 @@ the harness exactly as the contract links twins.
 | `test_governance.py` | governance view reports no authority, deployer recorded but powerless, no pause/upgrade/admin methods, every write gate is a frozen-terms role, deployer cannot move held funds, stats/config agree |
 | `test_hardening.py` | digest freeze/recompute, criteria-id injection, stored-bytes digest, duplicate filing, cross-counterparty reuse, manifest reuse, prompt injection, settlement fail-closed, supported pays claimant |
 | `test_validators.py` | validator independence over image evidence: a sighted validator calibrates, examines the image, and agrees; a blind validator dissents without looking or judging the leader's descriptions; a blind leader records no decision |
+| `test_seen_binding.py` | the seen set bound in both directions: a validator dissents when the leader counts an image it did not see and when the leader omits one it did see; it agrees when both saw the same images and on a twin whose bytes were seen; the record reports an image the panel never saw as unseen, and no retry is available when the panel examined everything |
 
 `model.py` holds harness helpers (canary PNG codec, queued-answer helpers).
 
